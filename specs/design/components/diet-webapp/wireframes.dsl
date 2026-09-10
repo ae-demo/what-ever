@@ -66,21 +66,21 @@ screen MealPlanEntry "One planned meal"
     button "Remove" danger -> MealPlan
     button "Order for lunch" primary -> OrderLunch
 
-screen OrderLunch "Confirm ordering this meal through Uber Eats"
+screen OrderLunch "Confirm sending this meal as a WhatsApp order"
   navbar "Diet Manager"
   heading "Order for lunch"
-  text "Grilled chicken bowl will be ordered through Uber Eats."
-  badge "Uber Eats" info
+  text "Grilled chicken bowl will be sent as a WhatsApp message to the restaurant."
+  badge "WhatsApp" info
   row
     right
     button "Cancel" -> MealPlanEntry
     button "Place order" primary -> OrderConfirmation
 
-screen OrderConfirmation "Lunch order placed"
+screen OrderConfirmation "Lunch order sent"
   navbar "Diet Manager"
-  heading "Order placed"
-  badge "Confirmed" success
-  text "Your lunch order has been sent to Uber Eats."
+  heading "Order sent"
+  badge "Sent" success
+  text "Your lunch order has been sent to the restaurant on WhatsApp."
   button "Back to meal plan" primary -> MealPlan
 
 screen FoodLog "Log what was actually eaten"
@@ -169,7 +169,7 @@ screen LeaveFeedback "Write feedback for a dieter"
 
 flow "Plan and order lunch"
   role "Dieter"
-  description "A dieter browses recipes, plans meals, and orders a planned lunch through Uber Eats"
+  description "A dieter browses recipes, plans meals, and orders a planned lunch via a WhatsApp message"
   Dashboard
   Recipes
   RecipeDetail

@@ -56,11 +56,11 @@
     },
     {
       "id": "REQ-007",
-      "statement": "A Dieter can order a planned lunch directly through Uber Eats from within the app",
+      "statement": "A Dieter can order a planned lunch from within the app by having it sent as a WhatsApp message to the restaurant",
       "stories": [7],
       "criteria": [
-        { "id": "AC-007-a", "must": "A Dieter can trigger an Uber Eats order for a planned lunch meal without leaving the app", "method": "e2e" },
-        { "id": "AC-007-b", "must": "The Dieter sees confirmation that the lunch order was placed", "method": "e2e" }
+        { "id": "AC-007-a", "must": "A Dieter can trigger sending a planned lunch meal as a WhatsApp order without leaving the app", "method": "e2e" },
+        { "id": "AC-007-b", "must": "The Dieter sees confirmation that the lunch order was sent", "method": "e2e" }
       ]
     },
     {

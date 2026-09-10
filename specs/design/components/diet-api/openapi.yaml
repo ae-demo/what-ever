@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Diet Manager API
   version: "0.1.0"
-  description: Goals, recipes, meal plans, food logs, weight, coach connections, feedback, and lunch ordering.
+  description: Goals, recipes, meal plans, food logs, weight, coach connections, feedback, and lunch ordering via WhatsApp.
 servers:
   - url: /
 paths:
@@ -140,7 +140,7 @@ paths:
       - $ref: '#/components/parameters/UserId'
     post:
       operationId: orderLunch
-      summary: Order a meal plan entry for lunch through Uber Eats
+      summary: Order a meal plan entry for lunch by sending it as a WhatsApp message to the restaurant's contact
       responses:
         '201':
           description: Lunch order placed
@@ -419,7 +419,7 @@ components:
       properties:
         id: { type: string }
         mealPlanEntryId: { type: string }
-        uberEatsOrderId: { type: string }
+        whatsappMessageId: { type: string }
         status: { type: string, enum: [placed, confirmed, failed] }
     FoodLogEntry:
       type: object

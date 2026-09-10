@@ -5,7 +5,6 @@ component diet-api as "Diet Manager API" service
 component diet-db as "Diet Manager Database" database
 
 east user-auth as "Thunder Auth" identity-server
-south ubereats as "Uber Eats" service
 south whatsapp as "WhatsApp" service
 south nutrition-service as "Nutrition Database" service
 
@@ -16,6 +15,5 @@ diet-webapp -> user-auth
 
 diet-api -> diet-db
 diet-api -> user-auth
-diet-api -> ubereats
 diet-api -> whatsapp
 diet-api -> nutrition-service

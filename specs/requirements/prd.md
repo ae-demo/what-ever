@@ -22,8 +22,8 @@ lunch directly through Uber Eats without leaving the app.
 ## Actors
 
 - **Dieter** — the person managing their own diet: sets goals, plans meals
-from recipes, logs what they eat, tracks progress, and can order lunch
-through Uber Eats.
+from recipes, logs what they eat, tracks progress, and can order lunch by
+having it sent as a WhatsApp message to the restaurant.
 - **Coach** — a coach or nutritionist connected to one or more Dieters: views
 their plans, logs, and progress, and leaves guidance and recommendations.
 
@@ -41,9 +41,9 @@ how closely I follow my plan.
 goal, so that I know how I'm doing.
 6. As a Dieter, I want to track my weight over time, so that I can see whether
 my diet is moving me toward my goal.
-7. As a Dieter, I want to order a planned lunch directly through Uber Eats
-from within the app, so that I can get a meal that fits my plan without
-switching apps.
+7. As a Dieter, I want to order a planned lunch from within the app by having
+it sent as a WhatsApp message to the restaurant, so that I can get a meal
+that fits my plan without switching apps.
 8. As a Dieter, I want to invite a coach to connect to my account, so that
 they can see my plan and guide me.
 9. As a Coach, I want to see the plans, logs, and progress of the Dieters
@@ -57,8 +57,9 @@ feedback, so that I don't have to keep checking for it.
 
 - Sign-in is via SSO through Thunder, the platform identity provider — every
 actor signs in this way.
-- Meal ordering: Uber Eats — the user already intends to use it for ordering
-lunch, so it is named directly rather than left as a capability.
+- Meal ordering: a Dieter's lunch order is sent as a WhatsApp message to the
+restaurant's contact, using the same WhatsApp dependency as coach feedback
+notifications, rather than through a delivery-platform API.
 - Recipe and food nutrition lookups depend on a nutrition database capability;
 no specific provider is fixed yet, so the concrete provider is chosen at
 design time.
@@ -71,9 +72,9 @@ to more than one Coach.
 ## Out of Scope
 
 - Placing or managing any order other than lunch, and any order not placed
-through Uber Eats.
-- Payment processing for Uber Eats orders — handled entirely by Uber Eats
-itself, never by this product.
+by sending a WhatsApp message to the restaurant's contact.
+- Payment processing for lunch orders — handled entirely between the Dieter
+and the restaurant, never by this product.
 - Dieters authoring or publishing their own recipes into the catalog.
 - Clinical-grade nutrition analysis or medical advice.
 - Billing or scheduling between a Dieter and their Coach.

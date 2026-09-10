@@ -11,7 +11,7 @@
     { "kind": "component", "name": "diet-api", "description": "Calls the Diet Manager API for all goals, plans, logs, recipes, weight, coach and ordering data." },
     { "kind": "platform-resource", "name": "user-auth", "resourceType": "thunder-app", "description": "Signs Dieters and Coaches in via SSO." }
   ],
-  "description": "The single-page app both Dieters and Coaches use: Dieters set goals, plan meals from the recipe catalog, log food, track weight, and order lunch through Uber Eats; Coaches view their connected Dieters' plans and progress and leave feedback. It renders UI only and never calls Uber Eats, WhatsApp, or the nutrition database directly — all of that goes through diet-api.",
+  "description": "The single-page app both Dieters and Coaches use: Dieters set goals, plan meals from the recipe catalog, log food, track weight, and order lunch by having it sent as a WhatsApp message to the restaurant; Coaches view their connected Dieters' plans and progress and leave feedback. It renders UI only and never calls WhatsApp or the nutrition database directly — all of that goes through diet-api.",
   "stories": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
   "skillsPinned": ["wireframes", "react-webapp", "oxygen-ui-design-system", "thunder-authentication"]
 }

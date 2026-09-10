@@ -1,7 +1,7 @@
 # Plan meals and order lunch
 
 A Dieter builds a meal plan from the recipe catalog and orders a planned
-lunch through Uber Eats.
+lunch by having it sent as a WhatsApp message to the restaurant's contact.
 
 ```mermaid
 sequenceDiagram
@@ -9,7 +9,7 @@ sequenceDiagram
     participant diet-webapp
     participant diet-api
     participant nutrition-service
-    participant ubereats
+    participant whatsapp
 
     Dieter->>diet-webapp: browse recipes
     diet-webapp->>diet-api: list recipes
@@ -20,12 +20,12 @@ sequenceDiagram
     diet-webapp->>diet-api: create meal plan entry
     Dieter->>diet-webapp: order this entry for lunch
     diet-webapp->>diet-api: place lunch order
-    diet-api->>ubereats: create order
-    alt order accepted
-        ubereats-->>diet-api: order confirmed
+    diet-api->>whatsapp: send order as a message to the restaurant's contact
+    alt message sent
+        whatsapp-->>diet-api: message accepted
         diet-api-->>diet-webapp: order confirmed
-    else order failed
-        ubereats-->>diet-api: order rejected
+    else message failed
+        whatsapp-->>diet-api: send failed
         diet-api-->>diet-webapp: order failed
     end
 ```
