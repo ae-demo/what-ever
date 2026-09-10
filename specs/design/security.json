@@ -5,7 +5,7 @@
   "roles": [
     {
       "name": "Dieter",
-      "description": "Manages their own diet: sets goals, plans meals from recipes, logs food, tracks weight, orders lunch through Uber Eats, and connects a coach.",
+      "description": "Manages their own diet: sets goals, plans meals from recipes, logs food, tracks weight, orders lunch by having it sent as a WhatsApp message to the restaurant, and connects a coach.",
       "stories": [1, 2, 3, 4, 5, 6, 7, 8, 11],
       "grantedBy": "first sign-in",
       "permissions": [
