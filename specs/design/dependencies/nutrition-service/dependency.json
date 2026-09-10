@@ -1,9 +1,16 @@
 {
   "name": "nutrition-service",
-  "description": "Looks up nutrition facts (calories, macros) for recipes and logged foods, so recipes and food logs carry accurate nutrition data.",
-  "suggestions": [
-    { "name": "USDA FoodData Central", "style": "rest-api", "description": "Free, no commercial licensing, US government nutrient database — good default for a broad food catalog." },
-    { "name": "Edamam Nutrition Analysis API", "style": "rest-api", "description": "Commercial API with recipe-level nutrition analysis and a large branded-food database." },
-    { "name": "Nutritionix", "style": "rest-api", "description": "Commercial API with strong natural-language food logging and a large branded/restaurant database." }
+  "description": "Looks up nutrition facts (calories, macros) for recipes and logged foods, using USDA FoodData Central's food search and food-detail endpoints.",
+  "provider": "USDA FoodData Central",
+  "style": "rest-api",
+  "contract": "openapi.yaml",
+  "provenance": {
+    "sourceUrl": "https://api.nal.usda.gov/fdc/v1/yaml-spec?api_key=DEMO_KEY",
+    "sha256": "9c28d16bab82837177bb905987fefa8065d84e456b417b193f02da033427c2d8",
+    "fetchedAt": "2026-09-10T09:32:16Z",
+    "sliced": true
+  },
+  "config": [
+    { "key": "FDC_API_KEY", "secret": true, "description": "Your data.gov API key for USDA FoodData Central, obtained at https://fdc.nal.usda.gov/api-key-signup.html." }
   ]
 }
