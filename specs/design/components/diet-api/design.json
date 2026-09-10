@@ -1,0 +1,20 @@
+{
+  "name": "diet-api",
+  "type": "service",
+  "version": "0.1.0",
+  "language": "Ballerina",
+  "buildpack": "docker",
+  "appPath": "diet-api",
+  "entrypoint": "deployment/service",
+  "exposure": "intranet",
+  "dependencies": [
+    { "kind": "platform-resource", "name": "diet-db", "resourceType": "postgres-cnpg", "description": "Stores goals, recipes, meal plans, food logs, weight entries, coach connections, and feedback." },
+    { "kind": "platform-resource", "name": "user-auth", "resourceType": "thunder-app", "description": "Validates the caller's token and resolves their Dieter/Coach role." },
+    { "kind": "external", "name": "ubereats", "description": "Places a lunch order for the signed-in Dieter's selected planned meal." },
+    { "kind": "external", "name": "whatsapp", "description": "Sends the Dieter a WhatsApp message when their Coach leaves feedback." },
+    { "kind": "external", "name": "nutrition-service", "description": "Looks up nutrition facts for recipes and logged foods." }
+  ],
+  "description": "The backend for the Diet Manager: owns goals, the recipe catalog, meal plans, food logs, weight tracking, coach-dieter connections, and coach feedback. Places Uber Eats lunch orders, sends WhatsApp feedback notifications, and looks up nutrition data on behalf of the web app. Never renders UI and never holds Uber Eats/WhatsApp/nutrition-provider credentials outside its own config.",
+  "stories": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  "skillsPinned": ["openapi-conventions", "ballerina", "api-management", "thunder-authentication"]
+}

@@ -1,0 +1,519 @@
+openapi: 3.0.3
+info:
+  title: Diet Manager API
+  version: "0.1.0"
+  description: Goals, recipes, meal plans, food logs, weight, coach connections, feedback, and lunch ordering.
+servers:
+  - url: /
+paths:
+  /goal:
+    get:
+      operationId: getGoal
+      summary: Get the caller's active goal
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: The caller's goal
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Goal' }
+        '404':
+          description: No goal set
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    put:
+      operationId: setGoal
+      summary: Create or replace the caller's goal
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/GoalInput' }
+      responses:
+        '200':
+          description: Goal saved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Goal' }
+        '400':
+          description: Invalid goal values
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+  /recipes:
+    get:
+      operationId: listRecipes
+      summary: List the recipe catalog with nutrition facts
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - name: search
+          in: query
+          schema: { type: string }
+          description: filter by recipe name
+      responses:
+        '200':
+          description: Recipes
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RecipePage' }
+  /recipes/{recipeId}:
+    parameters:
+      - $ref: '#/components/parameters/RecipeId'
+    get:
+      operationId: getRecipe
+      summary: Get one recipe's detail and nutrition facts
+      responses:
+        '200':
+          description: The recipe
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Recipe' }
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+  /meal-plans:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      operationId: listMealPlans
+      summary: List the caller's meal plans
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Meal plans
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MealPlanPage' }
+    post:
+      operationId: createMealPlan
+      summary: Create a meal plan for the caller
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MealPlanInput' }
+      responses:
+        '201':
+          description: Meal plan created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MealPlan' }
+  /meal-plans/{mealPlanId}/entries:
+    parameters:
+      - $ref: '#/components/parameters/MealPlanId'
+      - $ref: '#/components/parameters/UserId'
+    post:
+      operationId: addMealPlanEntry
+      summary: Add a recipe to a meal plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MealPlanEntryInput' }
+      responses:
+        '201':
+          description: Entry added
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MealPlanEntry' }
+        '404':
+          description: Meal plan not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+  /meal-plan-entries/{entryId}/order:
+    parameters:
+      - name: entryId
+        in: path
+        required: true
+        schema: { type: string }
+        description: meal plan entry id
+      - $ref: '#/components/parameters/UserId'
+    post:
+      operationId: orderLunch
+      summary: Order a meal plan entry for lunch through Uber Eats
+      responses:
+        '201':
+          description: Lunch order placed
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LunchOrder' }
+        '400':
+          description: Entry cannot be ordered
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '404':
+          description: Entry not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+  /food-log:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      operationId: listFoodLogEntries
+      summary: List the caller's food log entries
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - name: day
+          in: query
+          schema: { type: string, format: date }
+          description: filter by day
+      responses:
+        '200':
+          description: Food log entries with daily totals
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FoodLogPage' }
+    post:
+      operationId: logFood
+      summary: Log a meal the caller actually ate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/FoodLogEntryInput' }
+      responses:
+        '201':
+          description: Logged
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FoodLogEntry' }
+  /weight-entries:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      operationId: listWeightEntries
+      summary: List the caller's weight history
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Weight entries
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WeightEntryPage' }
+    post:
+      operationId: recordWeight
+      summary: Record a weight entry for the caller
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/WeightEntryInput' }
+      responses:
+        '201':
+          description: Recorded
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/WeightEntry' }
+  /coach-connections:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      operationId: listCoachConnections
+      summary: List the caller's coach/dieter connections
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - name: status
+          in: query
+          schema: { type: string, enum: [pending, active, ended] }
+      responses:
+        '200':
+          description: Connections
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CoachConnectionPage' }
+    post:
+      operationId: inviteCoach
+      summary: A Dieter invites a coach to connect
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CoachInviteInput' }
+      responses:
+        '201':
+          description: Invitation created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CoachConnection' }
+        '400':
+          description: Invalid invitation
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+  /coach-connections/{connectionId}/feedback:
+    parameters:
+      - $ref: '#/components/parameters/ConnectionId'
+      - $ref: '#/components/parameters/UserId'
+    get:
+      operationId: listFeedback
+      summary: List feedback on a coach connection
+      parameters:
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Feedback entries
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FeedbackPage' }
+        '404':
+          description: Connection not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+    post:
+      operationId: leaveFeedback
+      summary: A coach leaves feedback on a connection, notified over WhatsApp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/FeedbackInput' }
+      responses:
+        '201':
+          description: Feedback sent
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Feedback' }
+        '403':
+          description: Caller is not this connection's coach
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '404':
+          description: Connection not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+components:
+  parameters:
+    UserId:
+      name: X-User-Id
+      in: header
+      required: true
+      description: caller identity injected by the gateway from the validated token
+      schema: { type: string }
+    Limit:
+      name: limit
+      in: query
+      schema: { type: integer, default: 20, maximum: 100 }
+    Offset:
+      name: offset
+      in: query
+      schema: { type: integer, default: 0 }
+    RecipeId:
+      name: recipeId
+      in: path
+      required: true
+      schema: { type: string }
+    MealPlanId:
+      name: mealPlanId
+      in: path
+      required: true
+      schema: { type: string }
+    ConnectionId:
+      name: connectionId
+      in: path
+      required: true
+      schema: { type: string }
+  schemas:
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: integer, description: HTTP or application error code }
+        message: { type: string, description: short human-readable label }
+        description: { type: string, description: detailed explanation }
+        moreInfo: { type: string, description: URI to documentation }
+    Goal:
+      type: object
+      required: [id, dieterId, calorieTarget]
+      properties:
+        id: { type: string }
+        dieterId: { type: string }
+        calorieTarget: { type: integer }
+        proteinTargetG: { type: integer }
+        carbTargetG: { type: integer }
+        fatTargetG: { type: integer }
+    GoalInput:
+      type: object
+      required: [calorieTarget]
+      properties:
+        calorieTarget: { type: integer }
+        proteinTargetG: { type: integer }
+        carbTargetG: { type: integer }
+        fatTargetG: { type: integer }
+    Recipe:
+      type: object
+      required: [id, name, calories]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        calories: { type: integer }
+        proteinG: { type: integer }
+        carbG: { type: integer }
+        fatG: { type: integer }
+    RecipePage:
+      type: object
+      required: [count, data]
+      properties:
+        count: { type: integer }
+        next: { type: string, nullable: true }
+        previous: { type: string, nullable: true }
+        data: { type: array, items: { $ref: '#/components/schemas/Recipe' } }
+    MealPlan:
+      type: object
+      required: [id, dieterId, weekStarting]
+      properties:
+        id: { type: string }
+        dieterId: { type: string }
+        weekStarting: { type: string, format: date }
+    MealPlanInput:
+      type: object
+      required: [weekStarting]
+      properties:
+        weekStarting: { type: string, format: date }
+    MealPlanPage:
+      type: object
+      required: [count, data]
+      properties:
+        count: { type: integer }
+        next: { type: string, nullable: true }
+        previous: { type: string, nullable: true }
+        data: { type: array, items: { $ref: '#/components/schemas/MealPlan' } }
+    MealPlanEntry:
+      type: object
+      required: [id, mealPlanId, recipeId, day, mealSlot]
+      properties:
+        id: { type: string }
+        mealPlanId: { type: string }
+        recipeId: { type: string }
+        day: { type: string, format: date }
+        mealSlot: { type: string, enum: [breakfast, lunch, dinner, snack] }
+    MealPlanEntryInput:
+      type: object
+      required: [recipeId, day, mealSlot]
+      properties:
+        recipeId: { type: string }
+        day: { type: string, format: date }
+        mealSlot: { type: string, enum: [breakfast, lunch, dinner, snack] }
+    LunchOrder:
+      type: object
+      required: [id, mealPlanEntryId, status]
+      properties:
+        id: { type: string }
+        mealPlanEntryId: { type: string }
+        uberEatsOrderId: { type: string }
+        status: { type: string, enum: [placed, confirmed, failed] }
+    FoodLogEntry:
+      type: object
+      required: [id, dieterId, recipeId, loggedAt, quantity]
+      properties:
+        id: { type: string }
+        dieterId: { type: string }
+        recipeId: { type: string }
+        loggedAt: { type: string, format: date-time }
+        quantity: { type: integer }
+    FoodLogEntryInput:
+      type: object
+      required: [recipeId, quantity]
+      properties:
+        recipeId: { type: string }
+        loggedAt: { type: string, format: date-time }
+        quantity: { type: integer }
+    FoodLogPage:
+      type: object
+      required: [count, data]
+      properties:
+        count: { type: integer }
+        next: { type: string, nullable: true }
+        previous: { type: string, nullable: true }
+        data: { type: array, items: { $ref: '#/components/schemas/FoodLogEntry' } }
+        totalCalories: { type: integer }
+        totalProteinG: { type: integer }
+        totalCarbG: { type: integer }
+        totalFatG: { type: integer }
+    WeightEntry:
+      type: object
+      required: [id, dieterId, recordedOn, weightKg]
+      properties:
+        id: { type: string }
+        dieterId: { type: string }
+        recordedOn: { type: string, format: date }
+        weightKg: { type: number }
+    WeightEntryInput:
+      type: object
+      required: [recordedOn, weightKg]
+      properties:
+        recordedOn: { type: string, format: date }
+        weightKg: { type: number }
+    WeightEntryPage:
+      type: object
+      required: [count, data]
+      properties:
+        count: { type: integer }
+        next: { type: string, nullable: true }
+        previous: { type: string, nullable: true }
+        data: { type: array, items: { $ref: '#/components/schemas/WeightEntry' } }
+    CoachConnection:
+      type: object
+      required: [id, dieterId, coachId, status]
+      properties:
+        id: { type: string }
+        dieterId: { type: string }
+        coachId: { type: string }
+        status: { type: string, enum: [pending, active, ended] }
+    CoachInviteInput:
+      type: object
+      required: [coachEmail]
+      properties:
+        coachEmail: { type: string, format: email }
+    CoachConnectionPage:
+      type: object
+      required: [count, data]
+      properties:
+        count: { type: integer }
+        next: { type: string, nullable: true }
+        previous: { type: string, nullable: true }
+        data: { type: array, items: { $ref: '#/components/schemas/CoachConnection' } }
+    Feedback:
+      type: object
+      required: [id, coachConnectionId, message, sentAt]
+      properties:
+        id: { type: string }
+        coachConnectionId: { type: string }
+        message: { type: string }
+        sentAt: { type: string, format: date-time }
+    FeedbackInput:
+      type: object
+      required: [message]
+      properties:
+        message: { type: string }
+    FeedbackPage:
+      type: object
+      required: [count, data]
+      properties:
+        count: { type: integer }
+        next: { type: string, nullable: true }
+        previous: { type: string, nullable: true }
+        data: { type: array, items: { $ref: '#/components/schemas/Feedback' } }
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+security:
+  - bearerAuth: []

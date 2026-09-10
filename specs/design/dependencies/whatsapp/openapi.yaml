@@ -1,0 +1,99 @@
+openapi: 3.0.3
+x-aep-derived: true
+info:
+  title: WhatsApp Business Cloud API (derived slice)
+  version: "1.0.0"
+  description: >-
+    Minimal slice derived from Meta's WhatsApp Cloud API reference, covering
+    only the send-message operation this project uses to notify a Dieter
+    when their Coach leaves feedback.
+servers:
+  - url: https://graph.facebook.com/v23.0
+paths:
+  /{phoneNumberId}/messages:
+    post:
+      operationId: sendWhatsappMessage
+      summary: Send a WhatsApp message to a recipient phone number
+      x-aep-source: https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages/
+      parameters:
+        - name: phoneNumberId
+          in: path
+          required: true
+          schema: { type: string }
+          description: The business's WhatsApp phone number id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        '200':
+          description: Message accepted for delivery
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendMessageResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    SendMessageRequest:
+      type: object
+      required: [messaging_product, to, type]
+      properties:
+        messaging_product:
+          type: string
+          enum: [whatsapp]
+        recipient_type:
+          type: string
+          enum: [individual]
+        to:
+          type: string
+          description: Recipient phone number in international format
+        type:
+          type: string
+          enum: [text, template]
+        text:
+          type: object
+          properties:
+            body: { type: string }
+    SendMessageResponse:
+      type: object
+      properties:
+        messaging_product: { type: string }
+        contacts:
+          type: array
+          items:
+            type: object
+            properties:
+              input: { type: string }
+              wa_id: { type: string }
+        messages:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: integer }
+        message: { type: string }
+security:
+  - bearerAuth: []

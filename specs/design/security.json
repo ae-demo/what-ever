@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "coldStartRole": "Dieter",
+  "publicComponents": [],
+  "roles": [
+    {
+      "name": "Dieter",
+      "description": "Manages their own diet: sets goals, plans meals from recipes, logs food, tracks weight, orders lunch through Uber Eats, and connects a coach.",
+      "stories": [1, 2, 3, 4, 5, 6, 7, 8, 11],
+      "grantedBy": "first sign-in",
+      "permissions": [
+        { "component": "diet-api", "actions": ["manage own goal", "browse recipes", "manage own meal plans", "manage own food log", "manage own weight entries", "manage own coach connections", "place lunch order", "receive feedback"] },
+        { "component": "diet-webapp", "screens": ["Dashboard", "Recipes", "Meal Plan", "Food Log", "Weight Progress", "Coaches", "Feedback"] }
+      ]
+    },
+    {
+      "name": "Coach",
+      "description": "Connected to one or more Dieters: views their plans, logs, and progress, and leaves feedback.",
+      "stories": [9, 10],
+      "grantedBy": "Dieter",
+      "permissions": [
+        { "component": "diet-api", "actions": ["view connected dieters' plans and logs", "view connected dieters' progress", "write feedback"] },
+        { "component": "diet-webapp", "screens": ["Connected Dieters", "Dieter Progress", "Feedback"] }
+      ]
+    }
+  ],
+  "testUsers": [
+    { "username": "test-dieter", "role": "Dieter" },
+    { "username": "test-coach", "role": "Coach" }
+  ],
+  "thunder": {
+    "name": "Diet Manager",
+    "type": "browser",
+    "scopes": "openid profile email group ou"
+  }
+}

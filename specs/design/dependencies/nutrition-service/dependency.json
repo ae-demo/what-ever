@@ -1,0 +1,9 @@
+{
+  "name": "nutrition-service",
+  "description": "Looks up nutrition facts (calories, macros) for recipes and logged foods, so recipes and food logs carry accurate nutrition data.",
+  "suggestions": [
+    { "name": "USDA FoodData Central", "style": "rest-api", "description": "Free, no commercial licensing, US government nutrient database — good default for a broad food catalog." },
+    { "name": "Edamam Nutrition Analysis API", "style": "rest-api", "description": "Commercial API with recipe-level nutrition analysis and a large branded-food database." },
+    { "name": "Nutritionix", "style": "rest-api", "description": "Commercial API with strong natural-language food logging and a large branded/restaurant database." }
+  ]
+}

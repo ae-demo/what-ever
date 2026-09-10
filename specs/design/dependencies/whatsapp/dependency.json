@@ -1,0 +1,16 @@
+{
+  "name": "whatsapp",
+  "description": "Sends a WhatsApp message to a Dieter's phone when their Coach leaves feedback, using Meta's WhatsApp Business Cloud API messages endpoint.",
+  "provider": "WhatsApp Business Cloud API",
+  "style": "rest-api",
+  "contract": "openapi.yaml",
+  "provenance": {
+    "sourceUrl": "https://developers.facebook.com/docs/whatsapp/cloud-api/reference/messages/",
+    "fetchedAt": "2026-09-10T00:00:00Z",
+    "sliced": false
+  },
+  "config": [
+    { "key": "WHATSAPP_PHONE_NUMBER_ID", "description": "The WhatsApp Business phone number id messages are sent from." },
+    { "key": "WHATSAPP_ACCESS_TOKEN", "secret": true, "description": "Bearer access token for the WhatsApp Business Cloud API." }
+  ]
+}
