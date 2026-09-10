@@ -7,13 +7,83 @@
   "appPath": "diet-api",
   "entrypoint": "deployment/service",
   "exposure": "intranet",
-  "dependencies": [
-    { "kind": "platform-resource", "name": "diet-db", "resourceType": "postgres-cnpg", "description": "Stores goals, recipes, meal plans, food logs, weight entries, coach connections, and feedback." },
-    { "kind": "platform-resource", "name": "user-auth", "resourceType": "thunder-app", "description": "Validates the caller's token and resolves their Dieter/Coach role." },
-    { "kind": "external", "name": "whatsapp", "description": "Sends the Dieter's lunch order as a WhatsApp message to the restaurant's contact, and sends the Dieter a WhatsApp message when their Coach leaves feedback." },
-    { "kind": "external", "name": "nutrition-service", "description": "Looks up nutrition facts for recipes and logged foods." }
+  "stories": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
   ],
   "description": "The backend for the Diet Manager: owns goals, the recipe catalog, meal plans, food logs, weight tracking, coach-dieter connections, and coach feedback. Places a Dieter's lunch order by sending it as a WhatsApp message to the restaurant's contact, sends WhatsApp feedback notifications, and looks up nutrition data on behalf of the web app. Never renders UI and never holds WhatsApp/nutrition-provider credentials outside its own config.",
-  "stories": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-  "skillsPinned": ["openapi-conventions", "ballerina", "api-management", "thunder-authentication"]
+  "dependencies": [
+    {
+      "kind": "platform-resource",
+      "name": "diet-db",
+      "description": "Stores goals, recipes, meal plans, food logs, weight entries, coach connections, and feedback.",
+      "resourceType": "postgres-cnpg",
+      "wiring": {
+        "ref": "what-ever-diet-db",
+        "envBindings": {
+          "dbname": "DIET_DB_DBNAME",
+          "host": "DIET_DB_HOST",
+          "password": "DIET_DB_PASSWORD",
+          "port": "DIET_DB_PORT",
+          "user": "DIET_DB_USER"
+        }
+      }
+    },
+    {
+      "kind": "platform-resource",
+      "name": "user-auth",
+      "description": "Validates the caller's token and resolves their Dieter/Coach role.",
+      "resourceType": "thunder-app",
+      "wiring": {
+        "ref": "what-ever-user-auth",
+        "envBindings": {
+          "client_id": "USER_AUTH_CLIENT_ID",
+          "issuer": "USER_AUTH_ISSUER",
+          "jwks_url": "USER_AUTH_JWKS_URL",
+          "scopes": "USER_AUTH_SCOPES"
+        }
+      }
+    },
+    {
+      "kind": "external",
+      "name": "whatsapp",
+      "description": "Sends the Dieter's lunch order as a WhatsApp message to the restaurant's contact, and sends the Dieter a WhatsApp message when their Coach leaves feedback.",
+      "wiring": {
+        "ref": "what-ever-whatsapp",
+        "envBindings": {
+          "WHATSAPP_ACCESS_TOKEN": "WHATSAPP_ACCESS_TOKEN",
+          "WHATSAPP_PHONE_NUMBER_ID": "WHATSAPP_PHONE_NUMBER_ID"
+        }
+      }
+    },
+    {
+      "kind": "external",
+      "name": "nutrition-service",
+      "description": "Looks up nutrition facts for recipes and logged foods.",
+      "wiring": {
+        "ref": "what-ever-nutriti-5b086401",
+        "envBindings": {
+          "FDC_API_KEY": "FDC_API_KEY"
+        }
+      }
+    }
+  ],
+  "exposesAPI": {
+    "auth": "end-user-required"
+  },
+  "skillsPinned": [
+    "openapi-conventions",
+    "ballerina",
+    "api-management",
+    "thunder-authentication"
+  ]
 }
