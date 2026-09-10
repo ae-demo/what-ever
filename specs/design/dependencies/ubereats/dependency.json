@@ -4,7 +4,18 @@
   "provider": "Uber Eats",
   "style": "rest-api",
   "config": [
-    { "key": "UBEREATS_CLIENT_ID", "description": "OAuth 2.0 client id issued by the Uber Developer Portal for this integration." },
-    { "key": "UBEREATS_CLIENT_SECRET", "secret": true, "description": "OAuth 2.0 client secret issued by the Uber Developer Portal for this integration." }
-  ]
+    {
+      "key": "UBEREATS_CLIENT_ID",
+      "description": "OAuth 2.0 client id issued by the Uber Developer Portal for this integration."
+    },
+    {
+      "key": "UBEREATS_CLIENT_SECRET",
+      "secret": true,
+      "description": "OAuth 2.0 client secret issued by the Uber Developer Portal for this integration."
+    }
+  ],
+  "assumed": {
+    "by": "01a05c56-20b4-77e9-b2bc-e169a2f6290e",
+    "at": "2026-09-10T09:34:52Z"
+  }
 }
