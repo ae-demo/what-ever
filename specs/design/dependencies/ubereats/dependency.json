@@ -3,16 +3,15 @@
   "description": "Places a lunch order on behalf of a signed-in Dieter through Uber Eats, so a planned meal can be ordered without leaving the app.",
   "provider": "Uber Eats",
   "style": "rest-api",
+  "contract": "openapi.yaml",
+  "provenance": {
+    "sourceUrl": "https://developer.uber.com/docs/eats/guides/order-integration",
+    "fetchedAt": "2026-09-10T09:34:52Z",
+    "sliced": false
+  },
   "config": [
-    {
-      "key": "UBEREATS_CLIENT_ID",
-      "description": "OAuth 2.0 client id issued by the Uber Developer Portal for this integration."
-    },
-    {
-      "key": "UBEREATS_CLIENT_SECRET",
-      "secret": true,
-      "description": "OAuth 2.0 client secret issued by the Uber Developer Portal for this integration."
-    }
+    { "key": "UBEREATS_CLIENT_ID", "description": "OAuth 2.0 client id issued by the Uber Developer Portal for this integration." },
+    { "key": "UBEREATS_CLIENT_SECRET", "secret": true, "description": "OAuth 2.0 client secret issued by the Uber Developer Portal for this integration." }
   ],
   "assumed": {
     "by": "01a05c56-20b4-77e9-b2bc-e169a2f6290e",
